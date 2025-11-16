@@ -1,37 +1,80 @@
 <x-app-layout>
-    {{-- Barra superior --}}
-    <nav class="bg-orange-400 p-4 flex justify-between items-center">
-        <div class="font-bold text-black text-lg">MidiaHelper</div>
-        <div class="space-x-6 text-white font-medium">
-            <a href="{{ route('organizer') }}" class="hover:underline">organizer</a>
-            <a href="#" class="hover:underline">promptIA</a>
-        </div>
-        <div>
-            <a href="{{ route('profile.edit') }}">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 fill-white" viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.4c-3.2 0-9.5 1.6-9.5 4.9V22h19v-2.7c0-3.3-6.3-4.9-9.5-4.9z"/></svg>
-            </a>
-        </div>
-    </nav>
 
-    {{-- Boas-vindas --}}
-    <div class="bg-orange-400 text-center py-10 text-black">
-        <h1 class="text-3xl font-bold">Olá, {{ $user->name }} 👋</h1>
-        <p class="text-lg mt-2">O que vamos criar hoje?</p>
-        <button class="bg-black text-white px-4 py-2 rounded-lg mt-4 hover:bg-gray-800">
-            (botão para criar)
-        </button>
+    {{-- SEÇÃO SUPERIOR: Saudação + Robô --}}
+    <section class="text-white py-5" style="background-color: #F29D35;">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <div class="text-center text-md-start mb-4 mb-md-0">
+                <h1 class="fw-bold display-6 text-dark mb-3">Olá, {{ $user->name }} 👋</h1>
+                <h3 class="fw-semibold text-dark mb-4">O que vamos criar hoje?</h3>
+
+                <a href="{{ route('ideas.create') }}"
+                   class="btn btn-light px-4 py-2 fw-semibold rounded-pill shadow-sm"
+                   style="color: #F29D35;">
+                    + Criar nova ideia
+                </a>
+            </div>
+
+            <div class="text-center">
+                <img src="{{ asset('assets/images/robo.png') }}" alt="Robô assistente" class="img-fluid" style="max-height: 200px;">
+            </div>
+        </div>
+    </section>
+
+    {{-- FILTROS E PESQUISA --}}
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+            <div class="mb-3 mb-md-0">
+                <button class="btn btn-sm text-white fw-semibold px-3 rounded-pill" style="background-color: #F29D35;">Filtros</button>
+            </div>
+
+            <div class="input-group w-auto">
+                <input type="text" class="form-control rounded-start-pill border-0 shadow-sm"
+                       placeholder="Pesquisar..." aria-label="Pesquisar">
+                <button class="btn rounded-end-pill text-white" style="background-color: #F29D35;">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+
+        {{-- CARDS --}}
+        @if($ideas->isEmpty())
+            <p class="text-center text-muted fs-5">🌱 Você ainda não criou nenhuma ideia.</p>
+        @else
+            <div class="row g-4">
+                @foreach ($ideas as $idea)
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card shadow-sm border-0 rounded-4 overflow-hidden"
+                             style="background-color: #fff;">
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold text-dark">{{ $idea->titulo }}</h5>
+                                <p class="text-muted small mb-1">{{ $idea->prazo?->format('d M, Y') ?? '—' }}</p>
+
+                                <p class="text-dark mt-3">{{ $idea->descricao ?? 'Sem descrição.' }}</p>
+
+                                <div class="d-flex justify-content-between align-items-center mt-4">
+                                    @php
+                                        $status = strtolower($idea->status->name ?? $idea->status);
+                                    @endphp
+
+                                    @if($status === 'em andamento')
+                                        <span class="badge rounded-pill px-3 py-2" style="background-color: #FFD54F; color: #000;">Em andamento</span>
+                                    @elseif($status === 'concluído' || $status === 'concluido')
+                                        <span class="badge rounded-pill px-3 py-2" style="background-color: #8BC34A;">Concluído</span>
+                                    @else
+                                        <span class="badge rounded-pill px-3 py-2" style="background-color: #FFB74D;">Ideias</span>
+                                    @endif
+
+                                    <i class="bi bi-pencil-square text-secondary fs-5"></i>
+                                </div>
+                            </div>
+
+                            {{-- FAIXA INFERIOR COLORIDA --}}
+                            <div style="background-color: #F29D35; height: 10px;"></div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
     </div>
 
-    {{-- Cards das ideias --}}
-    <div class="max-w-7xl mx-auto mt-10 px-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            @foreach ($ideas as $idea)
-                <div class="bg-orange-200 p-5 rounded-2xl shadow text-center">
-                    <h2 class="text-lg font-bold text-gray-800">{{ $idea->title }}</h2>
-                    <p class="text-sm text-gray-600 mt-1">Prazo: {{ $idea->deadline }}</p>
-                    <p class="text-sm mt-3 font-medium text-yellow-700">{{ $idea->status }}</p>
-                </div>
-            @endforeach
-        </div>
-    </div>
 </x-app-layout>

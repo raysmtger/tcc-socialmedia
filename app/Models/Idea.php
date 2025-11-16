@@ -29,4 +29,14 @@ class Idea extends Model
     {
         return $query->where('user_id', auth()->id()); //retorna só as ideias do usuário autenticado
     }
+
+    //filtrar por status
+    public function scopeStatus($query, $status)
+{
+    if ($status) {
+        $query->where('status', $status);
+    }
+    return $query;
+}
+
 }

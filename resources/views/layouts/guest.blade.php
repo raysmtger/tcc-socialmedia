@@ -1,30 +1,55 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ config('app.name', 'Midia Ateliê') }}</title>
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div>
+    <style>
+        body {
+            background-color: #ffffffff;
+            font-family: 'Poppins', sans-serif;
+            color: #222;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                {{ $slot }}
-            </div>
+        .auth-card {
+            background-color: #f8a43dff;
+            border-radius: 20px;
+            color: rgba(0, 0, 0, 0.68) ;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            padding: 2rem;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .btn-dark {
+            background-color: #fab168ff;
+            border: none;
+        }
+
+        .btn-dark:hover {
+            background-color: #f6ac62ff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-card">
+        <div class="text-center mb-4">
+            <img src="{{ asset('assets/images/logo.png') }}" alt="Midia Ateliê" width="100">
         </div>
-    </body>
+
+        {{ $slot }}
+    </div>
+</body>
 </html>

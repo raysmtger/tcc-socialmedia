@@ -40,6 +40,11 @@ class IdeaController extends Controller
         ]);
     }
 
+    public function create()
+    {
+    return view('ideas.create');
+    }
+
     public function store(StoreIdeaRequest $request)
     {
         Idea::create($request->validated() + ['user_id' => auth()->id()]);

@@ -13,7 +13,7 @@ Route::get('/', function () {
         : redirect('/login');
 });
 
-// 🔹 Grupo de rotas protegidas (só para usuários autenticados)
+//rotas protegidas (só para autenticados)
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/organizer', [OrganizerController::class, 'index'])->name('organizer');
@@ -28,5 +28,13 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// 🔐 Rotas de autenticação do Breeze (login, register, logout, etc.)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/ideas', [IdeaController::class, 'index'])->name('ideas.index');
+    Route::get('/ideas/create', [IdeaController::class, 'create'])->name('ideas.create'); 
+    Route::post('/ideas', [IdeaController::class, 'store'])->name('ideas.store');
+    Route::get('/ideas/{idea}/edit', [IdeaController::class, 'edit'])->name('ideas.edit');
+    Route::put('/ideas/{idea}', [IdeaController::class, 'update'])->name('ideas.update');
+    Route::delete('/ideas/{idea}', [IdeaController::class, 'destroy'])->name('ideas.destroy');
+});
+//autenticação do Breeze (login, register, logout, etc.)
 require __DIR__.'/auth.php';
