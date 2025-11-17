@@ -7,68 +7,47 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Idea; 
 use App\Enums\OrganizerStatus; 
 
+
 class OrganizerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-       $user = Auth::user();
+        $user           = Auth::user();
+        $q              = $request->string('q')->toString();
+        $status         = $request->string('status')->toString();
+        $plataforma     = $request->string('plataforma')->toString();
+        $tipo_conteudo  = $request->string('tipo_conteudo')->toString();
+        $cliente        = $request->string('cliente')->toString();
+        $from           = $request->date('from');
+        $to             = $request->date('to');
 
-        // apenas as ideias do usuário logado
-        $ideas = Idea::mine()->latest()->take(6)->get(); //as 6 mais recentes
+        $ideas = Idea::mine()
+            ->when($q, fn($qb) =>
+                $qb->where(fn($w) =>
+                    $w->where('titulo', 'like', "%$q%")
+                      ->orWhere('descricao', 'like', "%$q%")
+                      ->orWhere('nome_cliente', 'like', "%$q%")
+                )
+            )
+            ->when($status, fn($qb) => $qb->where('status', $status))
+            ->when($plataforma, fn($qb) => $qb->where('plataforma', $plataforma))
+            ->when($tipo_conteudo, fn($qb) => $qb->where('tipo_conteudo', $tipo_conteudo))
+            ->when($cliente, fn($qb) => $qb->where('nome_cliente', 'like', "%$cliente%"))
+            ->when($from, fn($qb) => $qb->whereDate('prazo', '>=', $from))
+            ->when($to, fn($qb) => $qb->whereDate('prazo', '<=', $to))
+            ->latest()
+            ->paginate(12)
+            ->withQueryString();
 
-        return view('organizer', [
-            'user' => $user,
-            'ideas' => $ideas,
-            'labels' => OrganizerStatus::labels(),
+        return view('organizer.index', [
+            'user'          => $user,
+            'ideas'         => $ideas,
+            'labels'        => OrganizerStatus::labels(),
+            'status'        => $status,
+            'query'         => $q,
+            'plataforma'    => $plataforma,
+            'tipo_conteudo' => $tipo_conteudo,
+            'cliente'       => $cliente,
         ]);
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

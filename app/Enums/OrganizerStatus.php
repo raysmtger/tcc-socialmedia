@@ -23,9 +23,9 @@ enum OrganizerStatus: string
     public static function colors(): array
     {
         return [
-            self::Ideias->value       => 'bg-yellow-200 text-yellow-800',
-            self::EmAndamento->value  => 'bg-blue-200 text-blue-800',
-            self::Concluido->value    => 'bg-green-200 text-green-800',
+            self::Ideias->value       => 'bg-warning text-dark',  
+            self::EmAndamento->value  => 'bg-info text-dark',     
+            self::Concluido->value    => 'bg-success text-white',
         ];
     }
 }

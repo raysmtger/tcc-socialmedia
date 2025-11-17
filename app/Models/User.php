@@ -45,4 +45,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Relacionamento: Um usuário tem muitas ideias no organizador
+     */
+    public function ideas()
+{
+    return $this->hasMany(Idea::class);
+}
+    /**
+     * Relacionamento: Um usuário tem muitas gerações de IA (prompts)
+     */
+    public function prompts()
+    {
+        return $this->hasMany(Prompt::class);
+    }
 }

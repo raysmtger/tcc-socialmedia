@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Enums\OrganizerStatus; 
 
-class StoreIdeaRequest extends FormRequest
+class UpdateIdeaRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -23,14 +23,8 @@ class StoreIdeaRequest extends FormRequest
             'status'       => ['required', Rule::in(array_column(OrganizerStatus::cases(), 'value'))],
             'plataforma'    => ['nullable', 'string', 'max:255'],
             'tipo_conteudo' => ['nullable', 'string', 'max:255'],
-            
-            // (separado dos anexos)
-            'imagens_descricao'   => ['nullable', 'array', 'max:5'],
-            'imagens_descricao.*' => ['image', 'mimes:png,jpg,jpeg', 'max:5120'], // 5MB
-            
-            // (documentos)
-            'anexos'        => ['nullable', 'array', 'max:5'], 
-            'anexos.*'      => ['file', 'mimes:pdf,png,jpg,jpeg', 'max:10240'], 
+            'anexos'        => ['nullable', 'array', 'max:5'],
+            'anexos.*'      => ['file', 'mimes:pdf,png,jpg,jpeg', 'max:10240'],
         ];
     }
 

@@ -23,7 +23,8 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    protected $policies = [
+protected $policies = [
     \App\Models\Idea::class => \App\Policies\IdeaPolicy::class,
 ];
+
 }
