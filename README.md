@@ -174,8 +174,8 @@ O **Mídia Ateliê** tem como objetivo facilitar o trabalho de profissionais de 
 
 ### 1️⃣ Clonar o repositório
 ```bash
-git clone https://github.com/seu-usuario/midia-atelie.git
-cd midia-atelie
+git clone https://github.com/raysmtger/tcc-socialmedia.git
+cd tcc-socialmedia
 ```
 
 ### 2️⃣ Instalar dependências PHP
