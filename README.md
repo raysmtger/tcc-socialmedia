@@ -240,11 +240,6 @@ php artisan serve
 
 ---
 
-## Screenshots
-
-*[Adicione prints do seu sistema aqui]*
-
----
 
 ## Autor
 
